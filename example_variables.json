@@ -1,0 +1,306 @@
+{
+  data: [{
+  category: null,
+  id: "jlzkwql2",
+  is-subcategory: false,
+  links: [{
+  rel: "self",
+  uri: "http://www.speedrun.com/api/v1/variables/jlzkwql2"
+}, {
+  rel: "game",
+  uri: "http://www.speedrun.com/api/v1/games/j1npme6p"
+}],
+  mandatory: false,
+  name: "Version",
+  obsoletes: true,
+  scope: {
+    type: "global"
+  },
+  user-defined: false,
+  values: {
+    _note: "`choices` is deprecated, please use `values` instead",
+    choices: { ... },
+    default: null,
+    values: { ... }
+  }
+}, {
+  category: null,
+  id: "9l737pn1",
+  is-subcategory: false,
+  links: [{
+  rel: "self",
+  uri: "http://www.speedrun.com/api/v1/variables/9l737pn1"
+}, {
+  rel: "game",
+  uri: "http://www.speedrun.com/api/v1/games/j1npme6p"
+}],
+  mandatory: false,
+  name: "Difficulty",
+  obsoletes: true,
+  scope: {
+    type: "global"
+  },
+  user-defined: false,
+  values: {
+    _note: "`choices` is deprecated, please use `values` instead",
+    choices: { ... },
+    default: null,
+    values: { ... }
+  }
+}, {
+  category: "xk9gz16d",
+  id: "p853vv0n",
+  is-subcategory: true,
+  links: [{
+  rel: "self",
+  uri: "http://www.speedrun.com/api/v1/variables/p853vv0n"
+}, {
+  rel: "game",
+  uri: "http://www.speedrun.com/api/v1/games/j1npme6p"
+}, {
+  rel: "category",
+  uri: "http://www.speedrun.com/api/v1/categories/xk9gz16d"
+}],
+  mandatory: true,
+  name: "Seed Type (AAdv)",
+  obsoletes: true,
+  scope: {
+    type: "full-game"
+  },
+  user-defined: false,
+  values: {
+    _note: "`choices` is deprecated, please use `values` instead",
+    choices: { ... },
+    default: "01343grl",
+    values: { ... }
+  }
+}, {
+  category: "xk9gz16d",
+  id: "789je4qn",
+  is-subcategory: true,
+  links: [{
+  rel: "self",
+  uri: "http://www.speedrun.com/api/v1/variables/789je4qn"
+}, {
+  rel: "game",
+  uri: "http://www.speedrun.com/api/v1/games/j1npme6p"
+}, {
+  rel: "category",
+  uri: "http://www.speedrun.com/api/v1/categories/xk9gz16d"
+}],
+  mandatory: true,
+  name: "Version Range (AAdv)",
+  obsoletes: true,
+  scope: {
+    type: "global"
+  },
+  user-defined: false,
+  values: {
+    _note: "`choices` is deprecated, please use `values` instead",
+    choices: { ... },
+    default: "klrw35m1",
+    values: { ... }
+  }
+}, {
+  category: null,
+  id: "ql6g2ow8",
+  is-subcategory: false,
+  links: [{
+  rel: "self",
+  uri: "http://www.speedrun.com/api/v1/variables/ql6g2ow8"
+}, {
+  rel: "game",
+  uri: "http://www.speedrun.com/api/v1/games/j1npme6p"
+}],
+  mandatory: true,
+  name: "F3",
+  obsoletes: true,
+  scope: {
+    type: "full-game"
+  },
+  user-defined: false,
+  values: {
+    _note: "`choices` is deprecated, please use `values` instead",
+    choices: { ... },
+    default: null,
+    values: { ... }
+  }
+}, {
+  category: null,
+  id: "dloymqd8",
+  is-subcategory: false,
+  links: [{
+  rel: "self",
+  uri: "http://www.speedrun.com/api/v1/variables/dloymqd8"
+}, {
+  rel: "game",
+  uri: "http://www.speedrun.com/api/v1/games/j1npme6p"
+}],
+  mandatory: true,
+  name: "Mods",
+  obsoletes: true,
+  scope: {
+    type: "global"
+  },
+  user-defined: false,
+  values: {
+    _note: "`choices` is deprecated, please use `values` instead",
+    choices: { ... },
+    default: null,
+    values: { ... }
+  }
+}]
+}
+{
+  data: [{
+  category: null,
+  id: "jlzkwql2",
+  is-subcategory: false,
+  links: [{
+  rel: "self",
+  uri: "http://www.speedrun.com/api/v1/variables/jlzkwql2"
+}, {
+  rel: "game",
+  uri: "http://www.speedrun.com/api/v1/games/j1npme6p"
+}],
+  mandatory: false,
+  name: "Version",
+  obsoletes: true,
+  scope: {
+    type: "global"
+  },
+  user-defined: false,
+  values: {
+    _note: "`choices` is deprecated, please use `values` instead",
+    choices: { ... },
+    default: null,
+    values: { ... }
+  }
+}, {
+  category: null,
+  id: "9l737pn1",
+  is-subcategory: false,
+  links: [{
+  rel: "self",
+  uri: "http://www.speedrun.com/api/v1/variables/9l737pn1"
+}, {
+  rel: "game",
+  uri: "http://www.speedrun.com/api/v1/games/j1npme6p"
+}],
+  mandatory: false,
+  name: "Difficulty",
+  obsoletes: true,
+  scope: {
+    type: "global"
+  },
+  user-defined: false,
+  values: {
+    _note: "`choices` is deprecated, please use `values` instead",
+    choices: { ... },
+    default: null,
+    values: { ... }
+  }
+}, {
+  category: "xk9gz16d",
+  id: "p853vv0n",
+  is-subcategory: true,
+  links: [{
+  rel: "self",
+  uri: "http://www.speedrun.com/api/v1/variables/p853vv0n"
+}, {
+  rel: "game",
+  uri: "http://www.speedrun.com/api/v1/games/j1npme6p"
+}, {
+  rel: "category",
+  uri: "http://www.speedrun.com/api/v1/categories/xk9gz16d"
+}],
+  mandatory: true,
+  name: "Seed Type (AAdv)",
+  obsoletes: true,
+  scope: {
+    type: "full-game"
+  },
+  user-defined: false,
+  values: {
+    _note: "`choices` is deprecated, please use `values` instead",
+    choices: { ... },
+    default: "01343grl",
+    values: { ... }
+  }
+}, {
+  category: "xk9gz16d",
+  id: "789je4qn",
+  is-subcategory: true,
+  links: [{
+  rel: "self",
+  uri: "http://www.speedrun.com/api/v1/variables/789je4qn"
+}, {
+  rel: "game",
+  uri: "http://www.speedrun.com/api/v1/games/j1npme6p"
+}, {
+  rel: "category",
+  uri: "http://www.speedrun.com/api/v1/categories/xk9gz16d"
+}],
+  mandatory: true,
+  name: "Version Range (AAdv)",
+  obsoletes: true,
+  scope: {
+    type: "global"
+  },
+  user-defined: false,
+  values: {
+    _note: "`choices` is deprecated, please use `values` instead",
+    choices: { ... },
+    default: "klrw35m1",
+    values: { ... }
+  }
+}, {
+  category: null,
+  id: "ql6g2ow8",
+  is-subcategory: false,
+  links: [{
+  rel: "self",
+  uri: "http://www.speedrun.com/api/v1/variables/ql6g2ow8"
+}, {
+  rel: "game",
+  uri: "http://www.speedrun.com/api/v1/games/j1npme6p"
+}],
+  mandatory: true,
+  name: "F3",
+  obsoletes: true,
+  scope: {
+    type: "full-game"
+  },
+  user-defined: false,
+  values: {
+    _note: "`choices` is deprecated, please use `values` instead",
+    choices: { ... },
+    default: null,
+    values: { ... }
+  }
+}, {
+  category: null,
+  id: "dloymqd8",
+  is-subcategory: false,
+  links: [{
+  rel: "self",
+  uri: "http://www.speedrun.com/api/v1/variables/dloymqd8"
+}, {
+  rel: "game",
+  uri: "http://www.speedrun.com/api/v1/games/j1npme6p"
+}],
+  mandatory: true,
+  name: "Mods",
+  obsoletes: true,
+  scope: {
+    type: "global"
+  },
+  user-defined: false,
+  values: {
+    _note: "`choices` is deprecated, please use `values` instead",
+    choices: { ... },
+    default: null,
+    values: { ... }
+  }
+}]
+}
