@@ -18,7 +18,6 @@ async function listMajors() {
   // Authenticate with Google and get an authorized client.
   const auth = new GoogleAuth({
     scopes: SCOPES,
-    keyfilePath: CREDENTIALS_PATH,
   });
 //   const auth = await authenticate({
 //     scopes: SCOPES,

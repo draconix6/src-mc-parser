@@ -1,4 +1,5 @@
 const axios = require('axios');
+const sheets = require('./index.js');
 
 const CATEGORIES = [
   {
@@ -167,6 +168,7 @@ function displayData(cats){
   const server = createServer((req, res) => {
       res.statusCode = 200;
       // res.setHeader('Content-Type', 'text/html');
+      sheets.appendToSheet(outputHtml);
       res.end(Buffer.from(`
         <style>
           table {
