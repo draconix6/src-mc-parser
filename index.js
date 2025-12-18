@@ -1,63 +1,49 @@
-import {GoogleAuth} from 'google-auth-library';
-import {google} from 'googleapis';
+import {SRC_API_URL, SHEET_NAMES} from './consts.js';
+import {SHEET_ID} from './sheet_id.js';
+import {getSrcData} from './speedruncom.js';
+import {getValues, appendValues} from './sheets.js';
 
-/**
- * Updates values in a spreadsheet.
- * @param {string} spreadsheetId The ID of the spreadsheet to update.
- * @param {string} range The range of cells to update.
- * @param {string} valueInputOption How the input data should be interpreted.
- * @param {(string[])[]} _values A 2D array of values to update.
- * @return {Promise<object>} The response from the update request.
- */
-async function updateValues(spreadsheetId, range, valueInputOption, _values) {
-  // Authenticate with Google and get an authorized client.
-  const auth = new GoogleAuth({
-    scopes: 'https://www.googleapis.com/auth/spreadsheets',
-  });
-
-  // Create a new Sheets API client.
-  const service = google.sheets({version: 'v4', auth});
-
-  // The values to update in the spreadsheet.
-  let values = [
-    [
-      "hi"
-    ],
-    // Additional rows ...
-  ];
-
-  // Create the request body.
-  const resource = {
-    values,
-  };
-
-  // Update the values in the spreadsheet.
-  const result = await service.spreadsheets.values.update({
-    spreadsheetId,
-    range,
-    valueInputOption,
-    resource,
-  });
-
-  // Log the number of updated cells.
-  console.log('%d cells updated.', result.data.updatedCells);
-  return result;
+async function getSubmissionsFromSheet(category) {
+  if (!category) return [];
+  console.log(`Getting existing submissions for ${category.name}...`);
+  var headers = await getValues(SHEET_ID, `${category.sheetName}!1:1`);
+  var linkColumn = String.fromCharCode(headers.data.values[0].indexOf("Link") + 65); // A = 65
+  var res = await getValues(SHEET_ID, `${category.sheetName}!${linkColumn}:${linkColumn}`);
+  return res.data.values;
 }
 
-updateValues("1qsPHFXee0SB0Pc8KYxLWa-u18xjFoAymzu4ALyI17gs", "Sheet1!B2", "USER_ENTERED");
+async function appendSubmissionsToSheet() {
+  var srcData = await getSrcData(SRC_API_URL);
+  var categories = srcData;
+  for (let i in categories) {
+    var cat = categories[i];
+    var rows = [];
+    var runsOnSheet = await getSubmissionsFromSheet(cat);
+    for (let j in cat.runs) {
+      var run = cat.runs[j];
+      if (run.category.sheetName != SHEET_NAMES.AA && run.category.sheetName != SHEET_NAMES.RSG_116) console.log(run);
+      // do not add runs that exist on the sheet already
+      var runExists = false;
+      for (let y in runsOnSheet) {
+        var row = runsOnSheet[y];
+        if (row == run.link) {
+          runExists = true;
+          break;
+        }
+      }
+      if (runExists) continue;
 
-// import express from 'express';
-// const app = express()
+      rows.push(cat.getSheetsFormat(run));
+    }
+    if (rows.length == 0) {
+      console.log(`${cat.name} has no new submissions`);
+      continue;
+    }
+    appendValues(SHEET_ID, `${cat.sheetName}`, "USER_ENTERED", rows)
+    .then(res => {
+      console.log(`Added ${res.data.updates.updatedRows} new submissions to ${res.data.updates.updatedRange}`)
+    });
+  }
+}
 
-// app.use(express.static('public'));
-// app.get('/', async (req, res) => {
-//   // appendToSheet();
-//   res.send(await getValues("1qsPHFXee0SB0Pc8KYxLWa-u18xjFoAymzu4ALyI17gs", "Sheet1"))}
-// );
-
-// const PORT = process.env.PORT || 8080;
-// app.listen(PORT, () => {
-//   console.log(
-//     `Hello from Cloud Run! The container started successfully and is listening for HTTP requests on ${PORT}`
-//   );
-// });
+appendSubmissionsToSheet();

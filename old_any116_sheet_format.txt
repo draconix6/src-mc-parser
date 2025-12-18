@@ -1,0 +1,27 @@
+return [
+            ``,
+            `Any% Glitchless - Random Seed, 1.16+`,
+            ``,
+            `${run.runner}`,
+            ``,
+            `${run.inGameTime}`,
+            ``,
+            `${run.submittedDate}`,
+            ``,
+            ``,
+            `${run.link}`,
+            `FALSE`,
+            `FALSE`,
+            `0`,
+            `${run.requiresLogs ? "" : "not applicable"}`,
+            // TODO: can probably remove below idk what most of the stuff here is even for
+            // TODO: put n/a and stuff on the actual sheet when logs aren't required
+            ``,
+            ``,
+            ``,
+            ``,
+            ``,
+            ``,
+            ``,
+            `FALSE`,
+          ];

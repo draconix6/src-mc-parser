@@ -141,3 +141,4 @@ vite.config.ts.timestamp-*
 .vite/
 
 credentials.json
+sheet_id.js

@@ -1,0 +1,5 @@
+- stop with all the subclasses
+    - move toSheetsFormat to consts
+    - move all new params to base class
+    - put retime cutoffs in constructor
+- maybe all the category consts can be condensed too
