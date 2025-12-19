@@ -9,6 +9,11 @@ export const SHEET_NAMES = {
     AA: "AA (all)",
 };
 
+export const SEED_TYPES = {
+  "Random Seed": "RSG",
+  "Set Seed": "SSG",
+}
+
 export const GLITCHED_TYPES = {
   EXTERNAL: "External",
   INTERNAL: "Internal",
@@ -24,7 +29,7 @@ export const COOP_LABELS = {
 }
 
 export const GLITCHLESS_CUTOFFS = {
-  "Random Seed": {
+  "RSG": {
     "Pre 1.8": [25 * 60, 23 * 60],
     "1.8": [25 * 60, 23 * 60],
     "1.9-1.12": [30 * 60, 25 * 60],
@@ -32,7 +37,7 @@ export const GLITCHLESS_CUTOFFS = {
     "1.16-1.19": [13 * 60, 10 * 60],
     "1.20+": [0, 0],
   },
-  "Set Seed": {
+  "SSG": {
     "Pre 1.8": [255, 255],
     "1.8": [210, 210],
     "1.9-1.12": [60, 60],

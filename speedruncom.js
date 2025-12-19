@@ -1,4 +1,5 @@
-import { GLITCHLESS_CUTOFFS, COOP_LABELS, SHEET_NAMES, GLITCHED_TYPES } from './consts.js';
+import { COOP_LABELS, SHEET_NAMES, SEED_TYPES, GLITCHED_TYPES } from './consts.js';
+import { CATEGORIES } from './categories.js';
 import axios from 'axios';
 
 export class SRCCategory {
@@ -42,6 +43,9 @@ export class SRCCategory {
             `${run.requiresLogs ? "" : "not applicable"}`,
             // TODO: put n/a and stuff when logs aren't required
             ``,
+            ``,
+            ``,
+            `n/a`,
           ];
         }
       case SHEET_NAMES.SSG:
@@ -95,110 +99,6 @@ export class SRCSubmission {
     this.requiresLogs = requiresLogs;
   }
 }
-
-const CATEGORIES = [
-  {
-    "name": "All Advancements",
-    "id": "xk9gz16d",
-    "sheetName": SHEET_NAMES.AA,
-    "longTimes": true,
-    "cutoffs": null,
-    "versionId": "789je4qn",
-    "seedTypeId": "p853vv0n",
-    "playerCountId": "",
-    "glitchedTypeId": "",
-  },
-  {
-    "name": "All Advancements Co-op",
-    "id": "xd114pzd",
-    "sheetName": SHEET_NAMES.AA,
-    "longTimes": true,
-    "cutoffs": null,
-    "versionId": "wl314d98",
-    "seedTypeId": "2lg3x13n",
-    "playerCountId": "789xmd68",
-    "glitchedTypeId": "",
-  },
-  {
-    "name": "All Achievements",
-    "id": "wk63eek1",
-    "sheetName": SHEET_NAMES.AA,
-    "longTimes": true,
-    "cutoffs": null,
-    "versionId": "0nw2y7xn",
-    "seedTypeId": "38do09zl",
-    "playerCountId": "",
-    "glitchedTypeId": "",
-  },
-  {
-    "name": "Any% Glitchless",
-    "id": "mkeyl926",
-    "sheetName": SHEET_NAMES.RSG,
-    "longTimes": false,
-    "cutoffs": GLITCHLESS_CUTOFFS,
-    "versionId": "wl33kewl",
-    "seedTypeId": "r8rg67rn",
-    "playerCountId": "",
-    "glitchedTypeId": "",
-  },
-  {
-    "name": "Any% Glitchless",
-    "id": "mkeyl926",
-    "sheetName": SHEET_NAMES.RSG_116,
-    "longTimes": false,
-    "cutoffs": GLITCHLESS_CUTOFFS,
-    "versionId": "wl33kewl",
-    "versionFilter": "4qye4731", // 1.16-1.19
-    "seedTypeId": "r8rg67rn",
-    "seedTypeFilter": "21d4zvp1", // Random Seed
-    "playerCountId": "",
-    "glitchedTypeId": "",
-  },
-  {
-    "name": "Any% Glitchless Co-op", // x=zd301qed-rn1p34dn.5lm7wvjl-68kd9yql.rqvojn6l-68k5jz82.jqz6vmm1
-    "id": "zd301qed",
-    "sheetName": SHEET_NAMES.COOP,
-    "longTimes": false,
-    "cutoffs": GLITCHLESS_CUTOFFS,
-    "versionId": "68kd9yql",
-    "seedTypeId": "rn1p34dn",
-    "playerCountId": "68k5jz82",
-    "glitchedTypeId": "",
-  },
-  {
-    "name": "Any%",
-    "id": "wkpn0vdr",
-    "sheetName": SHEET_NAMES.GLITCHED_PEACEFUL,
-    "longTimes": false,
-    "cutoffs": null,
-    "versionId": "wlexoyr8",
-    "seedTypeId": "2lgzk1o8",
-    "playerCountId": "",
-    "glitchedTypeId": "68k15rkl",
-  },
-  {
-    "name": "Any% Glitchless (Peaceful)",
-    "id": "9d86nz62",
-    "sheetName": SHEET_NAMES.GLITCHED_PEACEFUL,
-    "longTimes": false,
-    "cutoffs": null,
-    "versionId": "ylqmmrvn",
-    "seedTypeId": "wle63kx8",
-    "playerCountId": "",
-    "glitchedTypeId": "",
-  },
-  {
-    "name": "Any% (Peaceful)",
-    "id": "xd1qp728",
-    "sheetName": SHEET_NAMES.GLITCHED_PEACEFUL,
-    "longTimes": false,
-    "cutoffs": null,
-    "versionId": "gnxvv7gl",
-    "seedTypeId": "wl36vd6l",
-    "playerCountId": "",
-    "glitchedTypeId": "",
-  }
-]
 
 var runs = [];
 var submissions;
@@ -303,14 +203,17 @@ async function getRunData(cats){
         if (cat.seedTypeFilter != null && cat.seedTypeFilter != runSeedTypeId) continue;
         seedType = cat.seedTypes[runSeedTypeId].label;
         
+        // convert "Random Seed" to "RSG", etc.
+        if (SEED_TYPES[seedType]) seedType = SEED_TYPES[seedType];
+
         if (cat.cutoffs) {
           requiresLogs = run.times.ingame_t < cat.cutoffs[seedType][version][1];
         }
 
-        // find ingame time here as it is category dependent
-        // TODO: use sheets formatting for this instead? if not then at least just dynamically change it if the run is >1 hour?
-        var substrStart = cat.longTimes ? 11 : 14;
-        inGameTime = new Date(run.times.ingame_t * 1000).toISOString().substring(substrStart, substrStart + 8);
+        // find ingame time here, show hours if necessary - AA always shows hours even if some runs are <1 hour, but not milliseconds
+        var longRun = run.times.ingame_t > 60 * 60;
+        var substrStart = cat.longTimes || longRun ? 11 : 14;
+        inGameTime = new Date(run.times.ingame_t * 1000).toISOString().substring(substrStart, substrStart + ((!cat.longTimes && longRun) ? 12 : 8));
       }
 
       var playerCountId = cat.playerCountId;

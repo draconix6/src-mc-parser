@@ -21,7 +21,7 @@ async function appendSubmissionsToSheet() {
     var runsOnSheet = await getSubmissionsFromSheet(cat);
     for (let j in cat.runs) {
       var run = cat.runs[j];
-      if (run.category.sheetName != SHEET_NAMES.AA && run.category.sheetName != SHEET_NAMES.RSG_116) console.log(run);
+      // if (run.category.sheetName != SHEET_NAMES.AA && run.category.sheetName != SHEET_NAMES.RSG_116) console.log(run);
       // do not add runs that exist on the sheet already
       var runExists = false;
       for (let y in runsOnSheet) {
