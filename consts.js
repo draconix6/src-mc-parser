@@ -10,8 +10,8 @@ export const SHEET_NAMES = {
 };
 
 export const SEED_TYPES = {
-  "Random Seed": "RSG",
-  "Set Seed": "SSG",
+  "Random Seed": "RS",
+  "Set Seed": "SS",
 }
 
 export const GLITCHED_TYPES = {

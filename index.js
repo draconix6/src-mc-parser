@@ -13,15 +13,13 @@ async function getSubmissionsFromSheet(category) {
 }
 
 async function appendSubmissionsToSheet() {
-  var srcData = await getSrcData(SRC_API_URL);
-  var categories = srcData;
+  var categories = await getSrcData(SRC_API_URL);
   for (let i in categories) {
     var cat = categories[i];
     var rows = [];
     var runsOnSheet = await getSubmissionsFromSheet(cat);
     for (let j in cat.runs) {
       var run = cat.runs[j];
-      // if (run.category.sheetName != SHEET_NAMES.AA && run.category.sheetName != SHEET_NAMES.RSG_116) console.log(run);
       // do not add runs that exist on the sheet already
       var runExists = false;
       for (let y in runsOnSheet) {

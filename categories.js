@@ -37,17 +37,6 @@ export const CATEGORIES = [
   {
     "name": "Any% Glitchless",
     "id": "mkeyl926",
-    "sheetName": SHEET_NAMES.RSG,
-    "longTimes": false,
-    "cutoffs": GLITCHLESS_CUTOFFS,
-    "versionId": "wl33kewl",
-    "seedTypeId": "r8rg67rn",
-    "playerCountId": "",
-    "glitchedTypeId": "",
-  },
-  {
-    "name": "Any% Glitchless",
-    "id": "mkeyl926",
     "sheetName": SHEET_NAMES.RSG_116,
     "longTimes": false,
     "cutoffs": GLITCHLESS_CUTOFFS,
@@ -55,6 +44,17 @@ export const CATEGORIES = [
     "versionFilter": "4qye4731", // 1.16-1.19
     "seedTypeId": "r8rg67rn",
     "seedTypeFilter": "21d4zvp1", // Random Seed
+    "playerCountId": "",
+    "glitchedTypeId": "",
+  },
+  {
+    "name": "Any% Glitchless",
+    "id": "mkeyl926",
+    "sheetName": SHEET_NAMES.RSG,
+    "longTimes": false,
+    "cutoffs": GLITCHLESS_CUTOFFS,
+    "versionId": "wl33kewl",
+    "seedTypeId": "r8rg67rn",
     "playerCountId": "",
     "glitchedTypeId": "",
   },

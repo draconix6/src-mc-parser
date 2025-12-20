@@ -8,6 +8,7 @@ export class SRCCategory {
     this.id = category.id;
     this.sheetName = category.sheetName;
     this.longTimes = category.longTimes;
+    this.runJsons = [];
     this.runs = [];
 
     this.versionId = category.versionId;
@@ -23,7 +24,7 @@ export class SRCCategory {
     this.playerCountId = category.playerCountId;
     this.playerCounts = [];
 
-    this.glitchedTypeId = category.glitchedType;
+    this.glitchedTypeId = category.glitchedTypeId;
     this.glitchedTypes = [];
 
     this.cutoffs = category.cutoffs;
@@ -31,23 +32,20 @@ export class SRCCategory {
 
   getSheetsFormat(run) {
     switch (this.sheetName) {
-      case SHEET_NAMES.RSG:
       case SHEET_NAMES.RSG_116:
-        if (run.version == "1.16-1.19" || run.seedType == "Random Seed") {
-          return [
-            `open`,
-            `${run.runner}`,
-            `${run.inGameTime}`,
-            `${run.submittedDate}`,
-            `${run.link}`,
-            `${run.requiresLogs ? "" : "not applicable"}`,
-            // TODO: put n/a and stuff when logs aren't required
-            ``,
-            ``,
-            ``,
-            `n/a`,
-          ];
-        }
+        return [
+          `open`,
+          `${run.runner}`,
+          `${run.inGameTime}`,
+          `${run.submittedDate}`,
+          `${run.link}`,
+          ``, //`${run.requiresLogs ? "" : "not applicable"}`,
+          ``,
+          ``,
+          ``,
+          `n/a`,
+        ];
+      case SHEET_NAMES.RSG:
       case SHEET_NAMES.SSG:
         return [
           `open`,
@@ -74,7 +72,7 @@ export class SRCCategory {
           `${run.runner}`,
           `${run.inGameTime}`,
           `${run.version} ${run.seedType}`,
-          `${run.glitchedType}`,
+          `${run.glitchedType ? run.glitchedType : "Glitchless"}`,
           `${run.submittedDate}`,
           `${run.link}`
         ];
@@ -100,10 +98,10 @@ export class SRCSubmission {
   }
 }
 
+var finalCategories;
 var runs = [];
-var submissions;
 export async function getSrcData(url) {
-	console.log("Getting speedrun.com data...");
+	console.log("Getting pending submissions from speedrun.com...");
   await axios.get(url)
   .then(async function (response) {
     var resp = response.data;
@@ -118,37 +116,42 @@ export async function getSrcData(url) {
     }
     
     if (nextRequest) {
-      await getSrcData(nextRequest);
-    } else{
+      return await getSrcData(nextRequest);
+    } else {
       console.log("Retrieved pending submissions from speedrun.com.");
-      filterRuns();
-      submissions = await getCategoryData();
+      finalCategories = await getRunData(await getCategoryData());
     }
   });
-  return submissions;
+  return finalCategories;
 }
 
-var filteredRuns = []
-function filterRuns() {
+async function filterRuns(cats) {
   for (var i = 0; i < runs.length; i++) {
     var run = runs[i];
-    for (let i in CATEGORIES) {
-      var cat = CATEGORIES[i];
+    for (let i in cats) {
+      var cat = cats[i];
       if (cat.id == run.category.data.id) {
-        filteredRuns.push(run);
+        // TODO: filtering relies on duplicate categories with filters coming first in the categories.js list
+        var runVersionId = run.values[cat.versionId];
+        var runSeedTypeId = run.values[cat.seedTypeId];
+        if (cat.versionFilter != null && cat.versionFilter != runVersionId) continue;
+        if (cat.seedTypeFilter != null && cat.seedTypeFilter != runSeedTypeId) continue;
+
+        cat.runJsons.push(run);
         break;
       }
     }
   }
   console.log("Filtered pending submissions.");
+  return cats;
 }
 
 async function getCategoryData() {
+  var data;
   var categoriesToCheck = CATEGORIES.length;
   var cats = [];
   console.log("Getting category data from speedrun.com...");
   for (let cat in CATEGORIES) {
-    var data;
     await axios.get(`https://www.speedrun.com/api/v1/categories/${CATEGORIES[cat].id}/variables`)
     .then(async function (response) {
       var newCat = new SRCCategory(CATEGORIES[cat]);
@@ -162,55 +165,49 @@ async function getCategoryData() {
       }
       cats.push(newCat);
 
-      if (categoriesToCheck-- == 1) data = await getRunData(cats);
+      if (categoriesToCheck-- == 1) data = await filterRuns(cats);
     });
   }
   return data;
 }
 
-async function getRunData(cats){
-  for (var i = 0; i < filteredRuns.length; i++) {
-    var run = filteredRuns[i];
-    
-    var submittedDate = run.submitted.substr(0, 10);
-    var playerCount = run.players.data.length;
+async function getRunData(cats) {
+  for (let i in cats) {
+    var cat = cats[i];
+    for (let j in cat.runJsons) {
+      var run = cat.runJsons[j];
+  
+      var submittedDate = run.submitted.substr(0, 10);
+      var playerCount = run.players.data.length;
 
-    var inGameTime;
-    var category;
-    var version = "";
-    var seedType = "";
-    var coop = "";
-    var glitchedType = "";
-    var requiresLogs = false;
-    // console.log(run);
-    // console.log(run.values);
-    // TODO: improve
-    for (let i in cats) {
-      var cat = cats[i];
+      var inGameTime;
+      var version = "";
+      var seedType = "";
+      var coop = "";
+      var glitchedType = "";
+      var requiresLogs = false;
       
       var versionId = cat.versionId;
       var runVersionId = run.values[versionId];
-      // console.log(run.values);
       if (runVersionId) {
-        if (cat.versionFilter != null && cat.versionFilter != runVersionId) continue;
-        category = cat;
         version = cat.versions[runVersionId].label;
       }
 
       var seedTypeId = cat.seedTypeId;
       var runSeedTypeId = run.values[seedTypeId];
       if (runSeedTypeId) {
-        if (cat.seedTypeFilter != null && cat.seedTypeFilter != runSeedTypeId) continue;
         seedType = cat.seedTypes[runSeedTypeId].label;
         
-        // convert "Random Seed" to "RSG", etc.
-        if (SEED_TYPES[seedType]) seedType = SEED_TYPES[seedType];
+        // convert "Random Seed" to "RS", etc.
+        // add the G for Glitchless if category is not glitched
+        if (SEED_TYPES[seedType]) seedType = `${SEED_TYPES[seedType]}${cat.glitchedTypeId ? "" : "G"}`;
 
         if (cat.cutoffs) {
           requiresLogs = run.times.ingame_t < cat.cutoffs[seedType][version][1];
         }
 
         // find ingame time here, show hours if necessary - AA always shows hours even if some runs are <1 hour, but not milliseconds
+        // TODO: doesn't work so well, rethink sheets formatting
         var longRun = run.times.ingame_t > 60 * 60;
         var substrStart = cat.longTimes || longRun ? 11 : 14;
         inGameTime = new Date(run.times.ingame_t * 1000).toISOString().substring(substrStart, substrStart + ((!cat.longTimes && longRun) ? 12 : 8));
@@ -226,29 +223,30 @@ async function getRunData(cats){
       var glitchedTypeId = cat.glitchedTypeId;
       var runGlitchedTypeId = run.values[glitchedTypeId];
       if (runGlitchedTypeId) {
-        var glitchedLabel = cat.glitchedTypes[runGlitchedTypeId].label;
-        glitchedType = GLITCHED_TYPES[glitchedLabel];
+        glitchedType = cat.glitchedTypes[runGlitchedTypeId].label;
       }
-    }
 
-    // if (category.name == "Any% Glitchless") console.log(category);
-    // if (category.cutoffs) console.log(`${run.times.ingame_t} > ${category.cutoffs[seedType][version][0]}`);
-    if (category.cutoffs && run.times.ingame_t > category.cutoffs[seedType][version][0]) continue;
-    if (run.times.ingame_t == 0) continue; // if submitter did not include ingame time (likely a slowrun)
-    var submission = new SRCSubmission(
-      run.players.data[0].names.international,
-      submittedDate,
-      category,
-      inGameTime,
-      version,
-      seedType,
-      playerCount,
-      coop,
-      glitchedType,
-      run.weblink,
-      requiresLogs
-    );
-    category.runs.push(submission);
+      // if run is slower than the top run cutoff for this category
+      if (cat.cutoffs && run.times.ingame_t > cat.cutoffs[seedType][version][0]) continue;
+      // if submitter did not include ingame time (likely a slowrun)
+      if (run.times.ingame_t == 0) continue;
+      
+      var submission = new SRCSubmission(
+        run.players.data[0].names.international,
+        submittedDate,
+        cat,
+        inGameTime,
+        version,
+        seedType,
+        playerCount,
+        coop,
+        glitchedType,
+        run.weblink,
+        requiresLogs
+      );
+      // console.log(`Pushed run by ${submission.runner} in category ${cat.name}.`);
+      cat.runs.push(submission);
+    }
   }
 
   return cats;
