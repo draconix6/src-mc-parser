@@ -1,1 +1,0 @@
-export const SHEET_ID = "1-fjCvWsFEq25zqRIuWsXRgW2Z-kK7QtrRUILIuNQjKg";

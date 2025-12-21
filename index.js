@@ -1,5 +1,4 @@
 import {SRC_API_URL, SHEET_NAMES} from './consts.js';
-// import {SHEET_ID} from './sheet_id.js';
 import {getSrcData} from './speedruncom.js';
 import {getValues, appendValues} from './sheets.js';
 
