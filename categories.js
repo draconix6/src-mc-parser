@@ -55,6 +55,19 @@ export const CATEGORIES = [
     "cutoffs": GLITCHLESS_CUTOFFS,
     "versionId": "wl33kewl",
     "seedTypeId": "r8rg67rn",
+    "seedTypeFilter": "21d4zvp1", // Random Seed
+    "playerCountId": "",
+    "glitchedTypeId": "",
+  },
+  {
+    "name": "Any% Glitchless",
+    "id": "mkeyl926",
+    "sheetName": SHEET_NAMES.SSG,
+    "longTimes": false,
+    "cutoffs": GLITCHLESS_CUTOFFS,
+    "versionId": "wl33kewl",
+    "seedTypeId": "r8rg67rn",
+    "seedTypeFilter": "klrzpjo1", // Set Seed
     "playerCountId": "",
     "glitchedTypeId": "",
   },
