@@ -24,17 +24,6 @@ export const CATEGORIES = [
     "glitchedTypeId": "",
   },
   {
-    "name": "All Achievements",
-    "id": "wk63eek1",
-    "sheetName": SHEET_NAMES.AA,
-    "longTimes": true,
-    "cutoffs": null,
-    "versionId": "0nw2y7xn",
-    "seedTypeId": "38do09zl",
-    "playerCountId": "",
-    "glitchedTypeId": "",
-  },
-  {
     "name": "Any% Glitchless",
     "id": "mkeyl926",
     "sheetName": SHEET_NAMES.RSG_116,
