@@ -1,6 +1,7 @@
 import { COOP_LABELS, SHEET_NAMES, SEED_TYPES, GLITCHED_TYPES } from './consts.js';
 import { CATEGORIES } from './categories.js';
 import axios from 'axios';
+import { Temporal } from '@js-temporal/polyfill';
 
 export class SRCCategory {
   constructor(category) {
@@ -207,10 +208,14 @@ async function getRunData(cats) {
         }
 
         // find ingame time here, show hours if necessary - AA always shows hours even if some runs are <1 hour, but not milliseconds
-        // TODO: doesn't work so well, rethink sheets formatting
-        var longRun = run.times.ingame_t > 60 * 60;
-        var substrStart = cat.longTimes || longRun ? 11 : 14;
-        inGameTime = new Date(run.times.ingame_t * 1000).toISOString().substring(substrStart, substrStart + ((!cat.longTimes && longRun) ? 12 : 8));
+        var igt = run.times.ingame_t;
+        var duration = Temporal.Duration.from({ seconds: Math.round(igt), milliseconds: Math.round((igt % 1) * 1000) });
+        
+        inGameTime = new Intl.DurationFormat("en", {style: "digital", hoursDisplay: "auto", fractionalDigits: cat.longTimes ? 0 : 3})
+        .format(duration.round(cat.longTimes ?
+          { smallestUnit: "seconds", largestUnit: "hours", } :
+          { smallestUnit: "milliseconds", largestUnit: "minutes", }
+        ));
       }
 
       var playerCountId = cat.playerCountId;
